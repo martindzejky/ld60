@@ -1,0 +1,29 @@
+name: Web export
+
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  web-export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: true
+
+      - name: Export Web build
+        run: |
+          mkdir -p dist/web
+          godot --headless --export-release Web dist/web/index.html
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-build
+          path: dist/web/
+          if-no-files-found: error
