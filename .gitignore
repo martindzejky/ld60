@@ -1,0 +1,10 @@
+# Godot cache and export credentials
+.godot/
+export_credentials.cfg
+*.tmp
+
+# Exported builds
+builds/
+
+# macOS
+.DS_Store
