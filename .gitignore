@@ -5,6 +5,7 @@ export_credentials.cfg
 
 # Exported builds
 builds/
+dist/
 
 # macOS
 .DS_Store
