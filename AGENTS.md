@@ -19,6 +19,16 @@ This is a Godot game for the Ludum Dare #60 compo this weekend. The theme has no
 - Before creating a release tag, set `application/config/version` in `project.godot` to exactly match the tag name, and include that change in the tagged commit.
 - Verify the Web export with `godot --headless --export-release Web dist/web/index.html` (create `dist/web` first).
 
+## Subagents
+
+Utilize subagents heavily for parallel work. The main agent is the coordinator. Keep the scope and effort proportionate to a game jam. Ideas for useful dedicated subagent specialists:
+
+- Code reviewer, reviewing code changes as the game evolves
+- Playtester, playing the actual game using the Godot MCP
+- Researcher, searching online for documentation, best practices, answers, inspiration
+
 ## Playtesting
 
 Use the `godot` MCP server from `.codex/config.toml` (Node.js and Godot must be on `PATH`). For gameplay changes, call `check_project` and `run_project` with the repo's absolute path as `projectPath`, inspect `take_screenshot` and `get_debug_output`, test interactions with `simulate_input`, then call `stop_project`. Temporary files go in `.mcp/`, which Git ignores.
+
+Playtesting should be done by a dedicated subagent. Multiple cheap subagents could be launched in parallel to test different strategies.
