@@ -16,7 +16,7 @@ pickup_radius = 1.5
 
 [node name="sprite" type="Sprite3D" parent="."]
 cast_shadow = 0
-position = Vector3(0, 0.27, 0)
+offset = Vector2(0, 18)
 pixel_size = 0.015
 billboard = 1
 alpha_cut = 1

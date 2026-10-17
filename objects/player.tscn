@@ -40,7 +40,7 @@ shape = SubResource("shape")
 [node name="sprite" type="Sprite3D" parent="." unique_id=1425917564]
 cast_shadow = 0
 material_override = SubResource("material")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0)
+offset = Vector2(0, 48)
 pixel_size = 0.015
 billboard = 1
 alpha_cut = 1
