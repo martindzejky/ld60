@@ -5,6 +5,7 @@ signal equipped
 signal aiming_changed(aiming: bool)
 signal fired(hit: Dictionary)
 signal reload_changed
+signal lit_changed(lit: bool)
 
 enum ReloadState { EMPTY, BALL_INSERTED, RAMMED, LOADED }
 
@@ -20,6 +21,14 @@ var is_owned: bool = false
 var is_aiming: bool = false
 var reload_state: ReloadState = ReloadState.EMPTY
 var ramrod_insertion: float = 0.0
+var is_lit: bool = false
+
+
+func ignite() -> void:
+  if not is_owned or reload_state != ReloadState.LOADED or is_lit:
+    return
+  is_lit = true
+  lit_changed.emit(true)
 
 
 func insert_ball() -> void:
@@ -63,14 +72,16 @@ func aim(direction: Vector2) -> void:
 
 
 func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
-  if not is_aiming or reload_state != ReloadState.LOADED:
+  if not is_aiming or reload_state != ReloadState.LOADED or not is_lit:
     return {}
   var direction := Vector3(target.x - origin.x, 0.0, target.z - origin.z)
   if direction.is_zero_approx():
     return {}
 
   reload_state = ReloadState.EMPTY
+  is_lit = false
   reload_changed.emit()
+  lit_changed.emit(false)
 
   var start := origin + Vector3.UP * ray_height
   var end := start + direction.normalized() * minf(direction.length(), shot_range)

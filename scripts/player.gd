@@ -65,6 +65,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
   if event.is_action_pressed('interact'):
     _interact()
+  elif event.is_action_pressed('ignite_musket'):
+    if (
+      not lantern.is_carried and _within_reach(lantern)
+      and lantern.energy >= lantern.max_energy * 0.3
+    ):
+      musket.ignite()
   elif event.is_action_pressed('fire_musket'):
     _shot_requested = _aiming_requested()
   elif event.is_action_pressed('dash'):
