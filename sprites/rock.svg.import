@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ti7aemh80hn7"
-path.s3tc="res://.godot/imported/rock.svg-bf94f637184df11df3c1d256605ff599.s3tc.ctex"
+path.s3tc="res://.godot/imported/rock.svg-83d88a80d48f14ea67143bfd4d66e8d4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://world/textures/rock.svg"
-dest_files=["res://.godot/imported/rock.svg-bf94f637184df11df3c1d256605ff599.s3tc.ctex"]
+source_file="res://sprites/rock.svg"
+dest_files=["res://.godot/imported/rock.svg-83d88a80d48f14ea67143bfd4d66e8d4.s3tc.ctex"]
 
 [params]
 

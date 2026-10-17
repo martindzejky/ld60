@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cy7uujhk8pe7"]
+
+[ext_resource type="Texture2D" uid="uid://ti7aemh80hn7" path="res://sprites/rock.svg" id="1"]
+
+[sub_resource type="CylinderShape3D" id="shape"]
+height = 1.0
+radius = 0.65
+
+[node name="rock" type="StaticBody3D" unique_id=1412215497]
+
+[node name="shape" type="CollisionShape3D" parent="." unique_id=1198032442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape")
+
+[node name="sprite" type="Sprite3D" parent="." unique_id=1158499520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+pixel_size = 0.015625
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("1")

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c54kdht4json4"]
 
-[ext_resource type="PackedScene" path="res://player/player.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://world/rock.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://objects/player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://objects/rock.tscn" id="2"]
 
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
