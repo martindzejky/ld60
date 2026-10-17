@@ -21,6 +21,7 @@ var _dash_timer: Timer = Timer.new()
 var _recovery_timer: Timer = Timer.new()
 var _cooldown_timer: Timer = Timer.new()
 var _item_parent: Node
+var _shot_requested: bool = false
 
 
 func _ready() -> void:
@@ -55,8 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
   elif event.is_action_pressed('wind_lantern') and lantern.is_carried:
     lantern.charge()
   elif event.is_action_pressed('fire_musket'):
-    _update_equipment()
-    musket.fire()
+    _shot_requested = _aiming_requested()
   elif event.is_action_pressed('dash'):
     _dash()
   else:
@@ -131,6 +131,17 @@ func _physics_process(_delta: float) -> void:
     velocity = Vector3(direction.x, 0.0, direction.y) * speed
 
   move_and_slide()
+  if _shot_requested:
+    _shot_requested = false
+    _update_equipment()
+    if musket.is_aiming:
+      var camera := get_viewport().get_camera_3d()
+      var mouse := get_viewport().get_mouse_position()
+      var target: Variant = Plane(Vector3.UP).intersects_ray(
+        camera.project_ray_origin(mouse), camera.project_ray_normal(mouse)
+      )
+      if target != null:
+        musket.fire(global_position, target, get_rid())
 
 
 func _on_dash_timer_timeout() -> void:
