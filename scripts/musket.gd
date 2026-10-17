@@ -59,6 +59,7 @@ func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
   var smoke := smoke_scene.instantiate() as CPUParticles3D
   smoke.top_level = true
   smoke.position = muzzle.global_position
+  smoke.position.y = 0.0
   get_tree().current_scene.add_child(smoke)
   print('Musket fired: ', hit.get('collider', 'miss'))
   fired.emit(hit)
