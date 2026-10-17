@@ -1,22 +1,63 @@
 [gd_scene format=3 uid="uid://c54kdht4json4"]
 
-[node name="main" type="Control" unique_id=270892111]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://world/rock.tscn" id="2"]
 
-[node name="label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
-theme_override_font_sizes/font_size = 32
-text = "Ludum Dare #60"
-horizontal_alignment = 1
-vertical_alignment = 1
+[sub_resource type="Environment" id="environment"]
+background_mode = 1
+background_color = Color(0.025, 0.045, 0.035, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.65, 0.8, 0.72, 1)
+ambient_light_energy = 0.65
+reflected_light_source = 2
+
+[sub_resource type="Gradient" id="ground_color"]
+colors = PackedColorArray(0.12, 0.19, 0.16, 1, 0.12, 0.19, 0.16, 1)
+
+[sub_resource type="GradientTexture2D" id="ground_texture"]
+gradient = SubResource("ground_color")
+width = 20
+height = 16
+
+[node name="main" type="Node3D" unique_id=270892111]
+
+[node name="environment" type="WorldEnvironment" parent="."]
+environment = SubResource("environment")
+
+[node name="light" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-60, -25, 0)
+light_color = Color(1, 0.88, 0.7, 1)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="camera" type="Camera3D" parent="."]
+position = Vector3(0, 10, 12)
+rotation_degrees = Vector3(-40, 0, 0)
+fov = 55.0
+current = true
+
+[node name="ground" type="Sprite3D" parent="."]
+rotation_degrees = Vector3(-90, 0, 0)
+alpha_cut = 1
+pixel_size = 1.0
+texture = SubResource("ground_texture")
+
+[node name="rock_left" parent="." instance=ExtResource("2")]
+position = Vector3(-3, 0, 0)
+
+[node name="rock_back" parent="." instance=ExtResource("2")]
+position = Vector3(2, 0, -3)
+
+[node name="rock_right" parent="." instance=ExtResource("2")]
+position = Vector3(4, 0, 3)
+
+[node name="player" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0, 3)
+
+[node name="hud" type="CanvasLayer" parent="."]
+
+[node name="controls" type="Label" parent="hud"]
+offset_left = 24.0
+offset_top = 20.0
+theme_override_font_sizes/font_size = 20
+text = "WASD / Arrow keys - Move"
