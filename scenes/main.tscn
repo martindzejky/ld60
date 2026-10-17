@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://c54kdht4json4"]
 
-[ext_resource type="PackedScene" path="res://objects/player.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://objects/rock.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://w6mjmcbcb6d" path="res://objects/player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://cy7uujhk8pe7" path="res://objects/rock.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://objects/lantern.tscn" id="3"]
 
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
@@ -21,43 +22,73 @@ height = 16
 
 [node name="main" type="Node3D" unique_id=270892111]
 
-[node name="environment" type="WorldEnvironment" parent="."]
+[node name="environment" type="WorldEnvironment" parent="." unique_id=1644920340]
 environment = SubResource("environment")
 
-[node name="light" type="DirectionalLight3D" parent="."]
-rotation_degrees = Vector3(-60, -25, 0)
-light_color = Color(1, 0.88, 0.7, 1)
-light_energy = 0.8
-shadow_enabled = true
-
-[node name="ground" type="Sprite3D" parent="."]
-rotation_degrees = Vector3(-90, 0, 0)
-alpha_cut = 1
+[node name="ground" type="Sprite3D" parent="." unique_id=205520019]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 pixel_size = 1.0
+alpha_cut = 1
 texture = SubResource("ground_texture")
 
-[node name="rock_left" parent="." instance=ExtResource("2")]
-position = Vector3(-3, 0, 0)
+[node name="rock_left" parent="." unique_id=1503433654 instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
 
-[node name="rock_back" parent="." instance=ExtResource("2")]
-position = Vector3(2, 0, -3)
+[node name="rock_back" parent="." unique_id=2120411712 instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
 
-[node name="rock_right" parent="." instance=ExtResource("2")]
-position = Vector3(4, 0, 3)
+[node name="rock_right" parent="." unique_id=1999242164 instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 
-[node name="player" parent="." instance=ExtResource("1")]
-position = Vector3(0, 0, 3)
+[node name="player" parent="." unique_id=1253224889 instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 
-[node name="camera" type="Camera3D" parent="player"]
-position = Vector3(0, 10, 12)
-rotation_degrees = Vector3(-40, 0, 0)
-fov = 55.0
+[node name="camera" type="Camera3D" parent="player" unique_id=1545861327]
+transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 10, 12)
 current = true
+fov = 55.0
 
-[node name="hud" type="CanvasLayer" parent="."]
+[node name="lantern" parent="." unique_id=1329808312 node_paths=PackedStringArray("carrier", "attachment_slot", "drop_slot", "carried_ui") instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+carrier = NodePath("../player")
+attachment_slot = NodePath("../player/lantern_slot")
+drop_slot = NodePath("../player/drop_slot")
+carried_ui = NodePath("../hud/lantern")
 
-[node name="controls" type="Label" parent="hud"]
+[node name="hud" type="CanvasLayer" parent="." unique_id=997754346]
+
+[node name="controls" type="Label" parent="hud" unique_id=4274535]
 offset_left = 24.0
 offset_top = 20.0
 theme_override_font_sizes/font_size = 20
-text = "WASD / Arrow keys - Move"
+text = "WASD / Arrow keys - Move
+E / Enter - Pick up or drop"
+
+[node name="lantern" type="HBoxContainer" parent="hud" unique_id=1705136529]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -244.0
+offset_top = -72.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="icon" type="ColorRect" parent="hud/lantern" unique_id=1514002418]
+custom_minimum_size = Vector2(24, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(1, 0.95, 0.5, 1)
+
+[node name="prompt" type="Label" parent="hud/lantern" unique_id=1366080670]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Hold LMB to wind"
+vertical_alignment = 1

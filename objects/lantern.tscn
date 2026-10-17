@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/lantern.gd" id="1"]
+
+[sub_resource type="Gradient" id="color"]
+colors = PackedColorArray(1, 0.95, 0.5, 1, 1, 0.95, 0.5, 1)
+
+[sub_resource type="GradientTexture2D" id="texture"]
+gradient = SubResource("color")
+width = 24
+height = 36
+
+[node name="lantern" type="Node3D"]
+script = ExtResource("1")
+pickup_radius = 1.5
+
+[node name="sprite" type="Sprite3D" parent="."]
+position = Vector3(0, 0.27, 0)
+pixel_size = 0.015
+billboard = 1
+alpha_cut = 1
+texture = SubResource("texture")
+
+[node name="light" type="OmniLight3D" parent="."]
+position = Vector3(0, 0.5, 0)
+light_color = Color(1, 0.75, 0.3, 1)
+light_energy = 1.8
+omni_range = 6.0
