@@ -98,5 +98,5 @@ color = Color(1, 0.95, 0.5, 1)
 [node name="prompt" type="Label" parent="hud/lantern" unique_id=1366080670]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Hold LMB to wind"
+text = "Click LMB to wind"
 vertical_alignment = 1

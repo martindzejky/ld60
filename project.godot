@@ -59,6 +59,11 @@ dash={
 "events": [Object(InputEventKey,"physical_keycode":4194325)]
 }
 
+wind_lantern={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"button_index":1)]
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
