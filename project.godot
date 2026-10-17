@@ -64,6 +64,16 @@ wind_lantern={
 "events": [Object(InputEventMouseButton,"button_index":1)]
 }
 
+aim_musket={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"button_index":2)]
+}
+
+fire_musket={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"button_index":1)]
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
