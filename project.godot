@@ -54,6 +54,11 @@ interact={
 "events": [Object(InputEventKey,"physical_keycode":69), Object(InputEventKey,"physical_keycode":4194309), Object(InputEventKey,"physical_keycode":4194310)]
 }
 
+dash={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194325)]
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

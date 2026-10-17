@@ -16,6 +16,10 @@ height = 96
 [node name="player" type="CharacterBody3D" unique_id=1376385991]
 motion_mode = 1
 script = ExtResource("1")
+dash_speed = 14.0
+dash_duration = 0.18
+dash_recovery = 0.5
+dash_cooldown = 4.0
 
 [node name="shape" type="CollisionShape3D" parent="." unique_id=2138894733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
