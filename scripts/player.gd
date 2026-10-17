@@ -7,6 +7,7 @@ extends CharacterBody3D
 @export var lantern_slot: Marker3D
 @export var drop_slot: Marker3D
 @export var musket_back_slot: Marker3D
+@export var musket_front_slot: Marker3D
 @export var musket_aim_slot: Marker3D
 @export var pickup_radius: float = 1.5
 @export var speed: float = 4.0
@@ -23,6 +24,7 @@ var _recovery_timer: Timer = Timer.new()
 var _cooldown_timer: Timer = Timer.new()
 var _item_parent: Node
 var _shot_requested: bool = false
+var _fuse_shot_requested: bool = false
 var _dragging_ramrod: bool = false
 
 
@@ -85,6 +87,10 @@ func _on_lantern_pressed() -> void:
     lantern.charge()
 
 
+func _on_musket_fuse_expired() -> void:
+  _fuse_shot_requested = true
+
+
 func _on_barrel_pressed() -> void:
   if not lantern.is_carried:
     musket.insert_ball()
@@ -117,7 +123,7 @@ func _interact() -> void:
     lantern.reparent(_item_parent)
     lantern.global_transform = Transform3D(Basis.IDENTITY, drop_slot.global_position)
     lantern.set_carried(false)
-  elif _within_reach(lantern):
+  elif not musket.is_lit and _within_reach(lantern):
     _attach(lantern, lantern_slot)
     lantern.set_carried(true)
   _update_equipment()
@@ -138,6 +144,8 @@ func _update_equipment() -> void:
   if not musket.is_owned:
     return
   var slot := musket_aim_slot if aiming else musket_back_slot
+  if musket.is_lit and not aiming:
+    slot = musket_front_slot
   if musket.get_parent() != slot:
     _attach(musket, slot)
   if aiming:
@@ -166,7 +174,7 @@ func _physics_process(_delta: float) -> void:
     velocity = Vector3(direction.x, 0.0, direction.y) * speed
 
   move_and_slide()
-  if _shot_requested:
+  if _shot_requested or _fuse_shot_requested:
     _shot_requested = false
     _update_equipment()
     if musket.is_aiming:
@@ -177,6 +185,10 @@ func _physics_process(_delta: float) -> void:
       )
       if target != null:
         musket.fire(global_position, target, get_rid())
+    if _fuse_shot_requested and musket.is_lit:
+      musket.fire_upwards()
+    _fuse_shot_requested = false
+    _update_equipment()
 
 
 func _on_dash_timer_timeout() -> void:

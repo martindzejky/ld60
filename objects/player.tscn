@@ -20,13 +20,14 @@ shader = ExtResource("3")
 shader_parameter/sprite_texture = SubResource("texture")
 shader_parameter/omnidirectional = true
 
-[node name="player" type="CharacterBody3D" unique_id=1376385991 node_paths=PackedStringArray("flip", "lantern_slot", "drop_slot", "musket_back_slot", "musket_aim_slot")]
+[node name="player" type="CharacterBody3D" unique_id=1376385991 node_paths=PackedStringArray("flip", "lantern_slot", "drop_slot", "musket_back_slot", "musket_front_slot", "musket_aim_slot")]
 motion_mode = 1
 script = ExtResource("1")
 flip = NodePath("visuals/flip")
 lantern_slot = NodePath("visuals/flip/lantern_slot")
 drop_slot = NodePath("drop_slot")
 musket_back_slot = NodePath("visuals/flip/musket_back_slot")
+musket_front_slot = NodePath("visuals/flip/musket_front_slot")
 musket_aim_slot = NodePath("visuals/flip/musket_aim_slot")
 dash_speed = 14.0
 dash_duration = 0.18
@@ -61,3 +62,6 @@ position = Vector3(-0.35, 0.35, -0.1)
 
 [node name="musket_aim_slot" type="Marker3D" parent="visuals/flip"]
 position = Vector3(0.25, 0.7, 0.1)
+
+[node name="musket_front_slot" type="Marker3D" parent="visuals/flip"]
+position = Vector3(0.1, 0.55, 0.15)

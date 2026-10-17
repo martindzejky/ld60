@@ -259,4 +259,6 @@ color = Color(0.002, 0.006, 0.004, 1)
 
 [connection signal="pressed" from="hud/lantern" to="player" method="_on_lantern_pressed"]
 
+[connection signal="fuse_expired" from="musket" to="player" method="_on_musket_fuse_expired"]
+
 [editable path="player"]

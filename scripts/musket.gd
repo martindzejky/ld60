@@ -6,25 +6,37 @@ signal aiming_changed(aiming: bool)
 signal fired(hit: Dictionary)
 signal reload_changed
 signal lit_changed(lit: bool)
+signal fuse_expired
 
 enum ReloadState { EMPTY, BALL_INSERTED, RAMMED, LOADED }
 
 @export var sprite: Sprite3D
 @export var visuals: CameraFacing
 @export var muzzle: Marker3D
+@export var sparks: CPUParticles3D
 @export var flash_scene: PackedScene
 @export var smoke_scene: PackedScene
 @export var shot_range: float = 30.0
 @export var ray_height: float = 0.1
+@export_range(0.1, 30.0, 0.1) var fuse_duration: float = 10.0
 
 var is_owned: bool = false
 var is_aiming: bool = false
 var reload_state: ReloadState = ReloadState.EMPTY
 var ramrod_insertion: float = 0.0
 var is_lit: bool = false
+var _fuse_timer: Timer = Timer.new()
+
+
+func _ready() -> void:
+  _fuse_timer.one_shot = true
+  _fuse_timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
+  _fuse_timer.timeout.connect(_on_fuse_timer_timeout)
+  add_child(_fuse_timer)
 
 
 func warm_up_effects() -> void:
+  sparks.emitting = true
   var flash := flash_scene.instantiate() as MuzzleFlash
   add_child(flash)
   var smoke := smoke_scene.instantiate() as CPUParticles3D
@@ -35,12 +47,16 @@ func warm_up_effects() -> void:
       return
   flash.queue_free()
   smoke.queue_free()
+  sparks.emitting = false
 
 
 func ignite() -> void:
   if not is_owned or reload_state != ReloadState.LOADED or is_lit:
     return
   is_lit = true
+  sparks.restart()
+  sparks.emitting = true
+  _fuse_timer.start(fuse_duration)
   lit_changed.emit(true)
 
 
@@ -91,11 +107,6 @@ func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
   if direction.is_zero_approx():
     return {}
 
-  reload_state = ReloadState.EMPTY
-  is_lit = false
-  reload_changed.emit()
-  lit_changed.emit(false)
-
   var start := origin + Vector3.UP * ray_height
   var end := start + direction.normalized() * minf(direction.length(), shot_range)
   var query := PhysicsRayQueryParameters3D.create(start, end, 1, [excluded_body])
@@ -103,6 +114,23 @@ func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
   if not hit.is_empty():
     end = hit.position
 
+  _discharge(end, hit)
+  return hit
+
+
+func _on_fuse_timer_timeout() -> void:
+  if is_lit:
+    fuse_expired.emit()
+
+
+func fire_upwards() -> void:
+  if reload_state != ReloadState.LOADED or not is_lit:
+    return
+  var direction := sprite.global_basis.x.normalized()
+  _discharge(muzzle.global_position + direction * shot_range, {})
+
+
+func _discharge(end: Vector3, hit: Dictionary) -> void:
   var flash := flash_scene.instantiate() as MuzzleFlash
   get_tree().current_scene.add_child(flash)
   flash.play(muzzle.global_position, end)
@@ -111,6 +139,11 @@ func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
   smoke.position = muzzle.global_position
   smoke.position.y = 0.0
   get_tree().current_scene.add_child(smoke)
+  _fuse_timer.stop()
+  sparks.emitting = false
+  reload_state = ReloadState.EMPTY
+  is_lit = false
+  reload_changed.emit()
+  lit_changed.emit(false)
   print('Musket fired: ', hit.get('collider', 'miss'))
   fired.emit(hit)
-  return hit
