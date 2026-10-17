@@ -35,3 +35,10 @@ The user and the main agent are the "core development team" working on the game 
 Use the `godot` MCP server from `.codex/config.toml` (Node.js and Godot must be on `PATH`). For gameplay changes, call `check_project` and `run_project` with the repo's absolute path as `projectPath`, inspect `take_screenshot` and `get_debug_output`, test interactions with `simulate_input`, then call `stop_project`. Temporary files go in `.mcp/`, which Git ignores.
 
 Playtesting should be done by a dedicated subagent. Multiple cheap subagents could be launched in parallel to test different strategies or personalities or skill levels.
+
+## Principles and code hygiene
+
+- Objects stay small and self-contained. They only know about stuff in their control and have public interface for interacting with others.
+- Same for scripts/components. Small, self-contained, public API, focused.
+- Objects don't know about UI. Instead, UI parts get reference to target objects and subscribe to their signals to update their own state.
+- At the same time, this is a game jam, so keep it simple.
