@@ -2,7 +2,7 @@
 
 Read `README.md` first.
 
-This is a Godot game for the Ludum Dare #60 compo this weekend. The theme has not been announced yet.
+This is a Godot game for the Ludum Dare #60 compo. The theme is "Old Tech".
 
 ## Jam rules
 
@@ -10,8 +10,9 @@ This is a Godot game for the Ludum Dare #60 compo this weekend. The theme has no
 - Hacks, hardcoded values, and quick solutions are welcome.
 - Skip architecture, abstractions, design patterns, and performance work unless needed to make the game work.
 - Keep changes small and focused on the current task.
-- Avoid code comments unless a comment really earns its place.
+- Write readable code. Code comments are welcome, keep them to the point. Empty lines for readability.
 - When useful, reference the other public game repos at https://github.com/martindzejky, especially previous games and jam entries, for reusable scripts and examples. Check local clones first.
+- Always work locally on the master branch, commit to it directly. No PRs for simplicity and speed.
 
 ## Build and releases
 
@@ -27,8 +28,10 @@ Utilize subagents heavily for parallel work. The main agent is the coordinator. 
 - Playtester, playing the actual game using the Godot MCP
 - Researcher, searching online for documentation, best practices, answers, inspiration
 
+The user and the main agent are the "core development team" working on the game and its code together. The main agent then dispatches subagents for parallel work at meaningful checkpoints or pauses.
+
 ## Playtesting
 
 Use the `godot` MCP server from `.codex/config.toml` (Node.js and Godot must be on `PATH`). For gameplay changes, call `check_project` and `run_project` with the repo's absolute path as `projectPath`, inspect `take_screenshot` and `get_debug_output`, test interactions with `simulate_input`, then call `stop_project`. Temporary files go in `.mcp/`, which Git ignores.
 
-Playtesting should be done by a dedicated subagent. Multiple cheap subagents could be launched in parallel to test different strategies.
+Playtesting should be done by a dedicated subagent. Multiple cheap subagents could be launched in parallel to test different strategies or personalities or skill levels.
