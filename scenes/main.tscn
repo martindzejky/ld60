@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" path="res://objects/musket.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/lantern_ui.gd" id="6"]
 
+[ext_resource type="Script" path="res://scripts/musket_ui.gd" id="7"]
+
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
 background_color = Color(0.002, 0.006, 0.004, 1)
@@ -148,6 +150,98 @@ theme_override_font_sizes/font_size = 16
 text = "Click lantern to squeeze
 Let the lever reopen"
 horizontal_alignment = 1
+
+[node name="musket" type="Control" parent="hud" node_paths=PackedStringArray("musket", "lantern", "barrel", "ramrod", "ball", "prompt")]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -324.0
+offset_top = -494.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("7")
+musket = NodePath("../../musket")
+lantern = NodePath("../../lantern")
+barrel = NodePath("barrel")
+ramrod = NodePath("ramrod")
+ball = NodePath("ball")
+prompt = NodePath("prompt")
+
+[node name="stock" type="ColorRect" parent="hud/musket"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 330.0
+offset_right = 140.0
+offset_bottom = 405.0
+mouse_filter = 2
+color = Color(0.4, 0.22, 0.1, 1)
+
+[node name="tube" type="ColorRect" parent="hud/musket"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 190.0
+offset_right = 120.0
+offset_bottom = 350.0
+mouse_filter = 2
+color = Color(0.35, 0.38, 0.4, 1)
+
+[node name="barrel" type="Button" parent="hud/musket"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 170.0
+offset_right = 130.0
+offset_bottom = 200.0
+focus_mode = 0
+action_mode = 0
+mouse_default_cursor_shape = 2
+text = "Load"
+
+[node name="ball" type="ColorRect" parent="hud/musket"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 205.0
+offset_right = 108.0
+offset_bottom = 221.0
+mouse_filter = 2
+color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="ramrod" type="Button" parent="hud/musket"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 35.0
+offset_right = 125.0
+offset_bottom = 59.0
+focus_mode = 0
+mouse_default_cursor_shape = 6
+text = "Grip"
+
+[node name="shaft" type="ColorRect" parent="hud/musket/ramrod"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 24.0
+offset_right = 28.0
+offset_bottom = 145.0
+mouse_filter = 2
+color = Color(0.7, 0.55, 0.3, 1)
+
+[node name="prompt" type="Label" parent="hud/musket"]
+layout_mode = 0
+offset_top = 420.0
+offset_right = 300.0
+offset_bottom = 470.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[connection signal="pressed" from="hud/musket/barrel" to="player" method="_on_barrel_pressed"]
+[connection signal="gui_input" from="hud/musket/ramrod" to="player" method="_on_ramrod_gui_input"]
 
 [connection signal="pressed" from="hud/lantern" to="player" method="_on_lantern_pressed"]
 

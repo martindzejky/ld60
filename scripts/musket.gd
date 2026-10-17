@@ -4,6 +4,9 @@ extends Node3D
 signal equipped
 signal aiming_changed(aiming: bool)
 signal fired(hit: Dictionary)
+signal reload_changed
+
+enum ReloadState { EMPTY, BALL_INSERTED, RAMMED, LOADED }
 
 @export var sprite: Sprite3D
 @export var visuals: CameraFacing
@@ -15,6 +18,26 @@ signal fired(hit: Dictionary)
 
 var is_owned: bool = false
 var is_aiming: bool = false
+var reload_state: ReloadState = ReloadState.EMPTY
+var ramrod_insertion: float = 0.0
+
+
+func insert_ball() -> void:
+  if not is_owned or is_aiming or reload_state != ReloadState.EMPTY:
+    return
+  reload_state = ReloadState.BALL_INSERTED
+  reload_changed.emit()
+
+
+func move_ramrod(amount: float) -> void:
+  if not is_owned or is_aiming or reload_state not in [ReloadState.BALL_INSERTED, ReloadState.RAMMED]:
+    return
+  ramrod_insertion = clampf(ramrod_insertion + amount, 0.0, 1.0)
+  if ramrod_insertion == 1.0:
+    reload_state = ReloadState.RAMMED
+  elif ramrod_insertion == 0.0 and reload_state == ReloadState.RAMMED:
+    reload_state = ReloadState.LOADED
+  reload_changed.emit()
 
 
 func equip() -> void:
@@ -40,11 +63,14 @@ func aim(direction: Vector2) -> void:
 
 
 func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
-  if not is_aiming:
+  if not is_aiming or reload_state != ReloadState.LOADED:
     return {}
   var direction := Vector3(target.x - origin.x, 0.0, target.z - origin.z)
   if direction.is_zero_approx():
     return {}
+
+  reload_state = ReloadState.EMPTY
+  reload_changed.emit()
 
   var start := origin + Vector3.UP * ray_height
   var end := start + direction.normalized() * minf(direction.length(), shot_range)

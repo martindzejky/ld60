@@ -14,6 +14,7 @@ extends CharacterBody3D
 @export var dash_duration: float = 0.18
 @export var dash_recovery: float = 0.5
 @export var dash_cooldown: float = 4.0
+@export var ramrod_drag_distance: float = 150.0
 
 var _last_direction: Vector2 = Vector2.DOWN
 var _dash_direction: Vector2 = Vector2.DOWN
@@ -22,6 +23,7 @@ var _recovery_timer: Timer = Timer.new()
 var _cooldown_timer: Timer = Timer.new()
 var _item_parent: Node
 var _shot_requested: bool = false
+var _dragging_ramrod: bool = false
 
 
 func _ready() -> void:
@@ -47,6 +49,16 @@ func _process(_delta: float) -> void:
   _update_equipment()
 
 
+func _input(event: InputEvent) -> void:
+  if not _dragging_ramrod:
+    return
+  if event is InputEventMouseMotion:
+    musket.move_ramrod(event.relative.y / ramrod_drag_distance)
+    get_viewport().set_input_as_handled()
+  elif event.is_action_released('fire_musket'):
+    _dragging_ramrod = false
+
+
 func _unhandled_input(event: InputEvent) -> void:
   if event.is_echo():
     return
@@ -67,6 +79,16 @@ func _on_lantern_pressed() -> void:
     lantern.charge()
 
 
+func _on_barrel_pressed() -> void:
+  if not lantern.is_carried:
+    musket.insert_ball()
+
+
+func _on_ramrod_gui_input(event: InputEvent) -> void:
+  if event.is_action_pressed('fire_musket') and not lantern.is_carried:
+    _dragging_ramrod = musket.reload_state in [Musket.ReloadState.BALL_INSERTED, Musket.ReloadState.RAMMED]
+
+
 func _dash() -> void:
   if (
     not _cooldown_timer.is_stopped() or not _dash_timer.is_stopped()
@@ -81,6 +103,7 @@ func _dash() -> void:
 
 
 func _interact() -> void:
+  _dragging_ramrod = false
   if not musket.is_owned and _within_reach(musket):
     _attach(musket, musket_back_slot)
     musket.equip()
@@ -118,7 +141,10 @@ func _update_equipment() -> void:
 
 
 func _aiming_requested() -> bool:
-  return musket.is_owned and not lantern.is_carried and Input.is_action_pressed('aim_musket')
+  return (
+    musket.is_owned and not lantern.is_carried and not _dragging_ramrod
+    and Input.is_action_pressed('aim_musket')
+  )
 
 
 func _physics_process(_delta: float) -> void:
