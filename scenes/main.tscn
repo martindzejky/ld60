@@ -262,6 +262,22 @@ theme_override_font_sizes/font_size = 16
 autowrap_mode = 2
 horizontal_alignment = 1
 
+[node name="death_ui" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="message" type="Label" parent="death_ui"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 56
+text = "You are dead"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="loading" type="CanvasLayer" parent="." node_paths=PackedStringArray("musket")]
 layer = 100
 script = ExtResource("8")
@@ -283,5 +299,6 @@ color = Color(0.002, 0.006, 0.004, 1)
 [connection signal="fuse_expired" from="musket" to="player" method="_on_musket_fuse_expired"]
 [connection signal="fired" from="musket" to="player" method="_on_musket_fired"]
 [connection signal="died" from="player" to="hud" method="hide"]
+[connection signal="died" from="player" to="death_ui/message" method="show"]
 
 [editable path="player"]

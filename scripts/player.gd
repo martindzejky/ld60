@@ -22,6 +22,7 @@ signal light_changed(lit: bool)
 @export var dash_recovery: float = 0.5
 @export var dash_cooldown: float = 4.0
 @export var ramrod_drag_distance: float = 150.0
+@export var darkness_grace: float = 2.0
 
 var is_dead: bool = false
 var is_lit: bool:
@@ -32,6 +33,7 @@ var _dash_direction: Vector2 = Vector2.DOWN
 var _dash_timer: Timer = Timer.new()
 var _recovery_timer: Timer = Timer.new()
 var _cooldown_timer: Timer = Timer.new()
+var _darkness_timer: Timer = Timer.new()
 var _item_parent: Node
 var _shot_requested: bool = false
 var _fuse_shot_requested: bool = false
@@ -43,12 +45,16 @@ func _ready() -> void:
   _dash_timer.wait_time = dash_duration
   _recovery_timer.wait_time = dash_recovery
   _cooldown_timer.wait_time = dash_cooldown
+  _darkness_timer.wait_time = darkness_grace
   _dash_timer.timeout.connect(_on_dash_timer_timeout)
-  var timers: Array[Timer] = [_dash_timer, _recovery_timer, _cooldown_timer]
+  _darkness_timer.timeout.connect(die)
+  var timers: Array[Timer] = [_dash_timer, _recovery_timer, _cooldown_timer, _darkness_timer]
   for timer: Timer in timers:
     timer.one_shot = true
     timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
     add_child(timer)
+  if not is_lit:
+    _darkness_timer.start()
 
 
 func _process(_delta: float) -> void:
@@ -93,6 +99,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_light_sensor_light_changed(lit: bool) -> void:
+  if not is_dead:
+    if lit:
+      _darkness_timer.stop()
+    else:
+      _darkness_timer.start()
   light_changed.emit(lit)
 
 
@@ -115,9 +126,14 @@ func _on_musket_fired(hit: Dictionary) -> void:
 
 
 func take_bite() -> void:
+  die()
+
+
+func die() -> void:
   if is_dead:
     return
   is_dead = true
+  _darkness_timer.stop()
   velocity = Vector3.ZERO
   _dragging_ramrod = false
   _shot_requested = false
