@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody3D
 
+signal died
+
 @export var flip: Node3D
 @export var musket: Musket
 @export var lantern: Lantern
@@ -17,6 +19,7 @@ extends CharacterBody3D
 @export var dash_cooldown: float = 4.0
 @export var ramrod_drag_distance: float = 150.0
 
+var is_dead: bool = false
 var _last_direction: Vector2 = Vector2.DOWN
 var _dash_direction: Vector2 = Vector2.DOWN
 var _dash_timer: Timer = Timer.new()
@@ -83,21 +86,47 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_lantern_pressed() -> void:
-  if lantern.is_carried:
+  if not is_dead and lantern.is_carried:
     lantern.charge()
 
 
 func _on_musket_fuse_expired() -> void:
-  _fuse_shot_requested = true
+  if is_dead:
+    musket.fire_upwards()
+  else:
+    _fuse_shot_requested = true
+
+
+func _on_musket_fired(hit: Dictionary) -> void:
+  var enemy := hit.get('collider') as Enemy
+  if enemy:
+    enemy.take_shot()
+
+
+func take_bite() -> void:
+  if is_dead:
+    return
+  is_dead = true
+  velocity = Vector3.ZERO
+  _dragging_ramrod = false
+  _shot_requested = false
+  _fuse_shot_requested = false
+  _update_equipment()
+  flip.scale *= 0.5
+  set_process(false)
+  set_physics_process(false)
+  set_process_input(false)
+  set_process_unhandled_input(false)
+  died.emit()
 
 
 func _on_barrel_pressed() -> void:
-  if not lantern.is_carried:
+  if not is_dead and not lantern.is_carried:
     musket.insert_ball()
 
 
 func _on_ramrod_gui_input(event: InputEvent) -> void:
-  if event.is_action_pressed('fire_musket') and not lantern.is_carried:
+  if not is_dead and event.is_action_pressed('fire_musket') and not lantern.is_carried:
     _dragging_ramrod = musket.reload_state in [Musket.ReloadState.BALL_INSERTED, Musket.ReloadState.RAMMED]
 
 
@@ -156,7 +185,7 @@ func _update_equipment() -> void:
 
 func _aiming_requested() -> bool:
   return (
-    musket.is_owned and not lantern.is_carried and not _dragging_ramrod
+    not is_dead and musket.is_owned and not lantern.is_carried and not _dragging_ramrod
     and Input.is_action_pressed('aim_musket')
   )
 

@@ -109,7 +109,8 @@ func fire(origin: Vector3, target: Vector3, excluded_body: RID) -> Dictionary:
 
   var start := origin + Vector3.UP * ray_height
   var end := start + direction.normalized() * minf(direction.length(), shot_range)
-  var query := PhysicsRayQueryParameters3D.create(start, end, 1, [excluded_body])
+  var query := PhysicsRayQueryParameters3D.create(start, end, 3, [excluded_body])
+  query.collide_with_areas = true
   var hit := get_world_3d().direct_space_state.intersect_ray(query)
   if not hit.is_empty():
     end = hit.position

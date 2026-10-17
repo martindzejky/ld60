@@ -9,6 +9,7 @@
 
 [ext_resource type="Script" path="res://scripts/musket_ui.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/effects_warmup.gd" id="8"]
+[ext_resource type="PackedScene" path="res://objects/enemy.tscn" id="9"]
 
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
@@ -75,6 +76,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
 
 [node name="musket" parent="." unique_id=1198564765 instance=ExtResource("5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
+
+[node name="enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9")]
+position = Vector3(5, 0, -5)
+target = NodePath("../player")
 
 [node name="hud" type="CanvasLayer" parent="." unique_id=997754346]
 
@@ -260,5 +265,7 @@ color = Color(0.002, 0.006, 0.004, 1)
 [connection signal="pressed" from="hud/lantern" to="player" method="_on_lantern_pressed"]
 
 [connection signal="fuse_expired" from="musket" to="player" method="_on_musket_fuse_expired"]
+[connection signal="fired" from="musket" to="player" method="_on_musket_fired"]
+[connection signal="died" from="player" to="hud" method="hide"]
 
 [editable path="player"]
