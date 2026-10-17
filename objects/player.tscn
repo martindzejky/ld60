@@ -13,6 +13,18 @@ colors = PackedColorArray(1, 0.65, 0.22, 1, 1, 0.65, 0.22, 1)
 gradient = SubResource("color")
 height = 96
 
+[sub_resource type="StandardMaterial3D" id="material"]
+transparency = 2
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("texture")
+diffuse_mode = 1
+specular_mode = 2
+billboard_mode = 1
+disable_receive_shadows = true
+backlight_enabled = true
+backlight = Color(1, 1, 1, 1)
+
 [node name="player" type="CharacterBody3D" unique_id=1376385991]
 motion_mode = 1
 script = ExtResource("1")
@@ -26,6 +38,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("shape")
 
 [node name="sprite" type="Sprite3D" parent="." unique_id=1425917564]
+cast_shadow = 0
+material_override = SubResource("material")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0)
 pixel_size = 0.015
 billboard = 1
