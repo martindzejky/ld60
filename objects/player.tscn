@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cwsar4g8vkhkt" path="res://scripts/player.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/camera_facing.gd" id="2"]
+[ext_resource type="Shader" path="res://shaders/sprite_lighting.gdshader" id="3"]
 
 [sub_resource type="CapsuleShape3D" id="shape"]
 radius = 0.3
@@ -14,16 +15,10 @@ colors = PackedColorArray(1, 0.65, 0.22, 1, 1, 0.65, 0.22, 1)
 gradient = SubResource("color")
 height = 96
 
-[sub_resource type="StandardMaterial3D" id="material"]
-transparency = 2
-cull_mode = 2
-vertex_color_use_as_albedo = true
-albedo_texture = SubResource("texture")
-diffuse_mode = 1
-specular_mode = 2
-disable_receive_shadows = true
-backlight_enabled = true
-backlight = Color(1, 1, 1, 1)
+[sub_resource type="ShaderMaterial" id="material"]
+shader = ExtResource("3")
+shader_parameter/sprite_texture = SubResource("texture")
+shader_parameter/omnidirectional = true
 
 [node name="player" type="CharacterBody3D" unique_id=1376385991]
 motion_mode = 1
