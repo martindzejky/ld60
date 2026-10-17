@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d330qifnxgchu"]
 
-[ext_resource type="Script" path="res://scripts/lantern.gd" id="1"]
+[ext_resource type="Script" uid="uid://ds3fqg0cq3s7i" path="res://scripts/lantern.gd" id="1"]
 
 [sub_resource type="Gradient" id="color"]
 colors = PackedColorArray(1, 0.95, 0.5, 1, 1, 0.95, 0.5, 1)
@@ -10,11 +10,10 @@ gradient = SubResource("color")
 width = 24
 height = 36
 
-[node name="lantern" type="Node3D"]
+[node name="lantern" type="Node3D" unique_id=709075666]
 script = ExtResource("1")
-pickup_radius = 1.5
 
-[node name="sprite" type="Sprite3D" parent="."]
+[node name="sprite" type="Sprite3D" parent="." unique_id=418356784]
 cast_shadow = 0
 offset = Vector2(0, 18)
 pixel_size = 0.015
@@ -22,12 +21,12 @@ billboard = 1
 alpha_cut = 1
 texture = SubResource("texture")
 
-[node name="light" type="OmniLight3D" parent="."]
-position = Vector3(0, 0.5, 0)
+[node name="light" type="OmniLight3D" parent="." unique_id=876345472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8611219, 0)
 light_color = Color(1, 0.75, 0.3, 1)
 light_energy = 1.8
 light_specular = 0.0
 shadow_enabled = true
 shadow_blur = 0.0
-omni_attenuation = 0.0
 omni_range = 6.0
+omni_attenuation = 0.0
