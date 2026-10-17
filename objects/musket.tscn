@@ -10,9 +10,10 @@ shader = ExtResource("4")
 shader_parameter/sprite_texture = ExtResource("3")
 shader_parameter/omnidirectional = true
 
-[node name="musket" type="Node3D" node_paths=PackedStringArray("sprite")]
+[node name="musket" type="Node3D" node_paths=PackedStringArray("sprite", "visuals")]
 script = ExtResource("1")
 sprite = NodePath("visuals/sprite")
+visuals = NodePath("visuals")
 
 [node name="visuals" type="Node3D" parent="."]
 script = ExtResource("2")

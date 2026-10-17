@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody3D
 
+@export var flip: Node3D
+@export var musket: Musket
 @export var speed: float = 4.0
 @export var dash_speed: float = 14.0
 @export var dash_duration: float = 0.18
@@ -24,6 +26,15 @@ func _ready() -> void:
     timer.one_shot = true
     timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
     add_child(timer)
+
+
+func _process(_delta: float) -> void:
+  var facing := velocity.x
+  if musket.is_aiming:
+    var camera := get_viewport().get_camera_3d()
+    facing = get_viewport().get_mouse_position().x - camera.unproject_position(global_position).x
+  if not is_zero_approx(facing):
+    flip.scale.x = -1.0 if facing < 0.0 else 1.0
 
 
 func _unhandled_input(event: InputEvent) -> void:

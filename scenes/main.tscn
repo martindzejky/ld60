@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://w6mjmcbcb6d" path="res://objects/player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://cy7uujhk8pe7" path="res://objects/rock.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://objects/lantern.tscn" id="3"]
-[ext_resource type="Shader" path="res://shaders/ground_lighting.gdshader" id="4"]
+[ext_resource type="PackedScene" uid="uid://d330qifnxgchu" path="res://objects/lantern.tscn" id="3"]
+[ext_resource type="Shader" uid="uid://bn1p42cqm4tj0" path="res://shaders/ground_lighting.gdshader" id="4"]
 [ext_resource type="PackedScene" path="res://objects/musket.tscn" id="5"]
 
 [sub_resource type="Environment" id="environment"]
@@ -23,6 +23,7 @@ width = 20
 height = 16
 
 [sub_resource type="ShaderMaterial" id="ground_material"]
+render_priority = 0
 shader = ExtResource("4")
 shader_parameter/ground_texture = SubResource("ground_texture")
 
@@ -32,12 +33,12 @@ shader_parameter/ground_texture = SubResource("ground_texture")
 environment = SubResource("environment")
 
 [node name="ground" type="Sprite3D" parent="." unique_id=205520019]
-cast_shadow = 0
-material_override = SubResource("ground_material")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+material_override = SubResource("ground_material")
+cast_shadow = 0
 pixel_size = 1.0
-alpha_cut = 1
 shaded = true
+alpha_cut = 1
 texture = SubResource("ground_texture")
 
 [node name="rock_left" parent="." unique_id=1503433654 instance=ExtResource("2")]
@@ -49,8 +50,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
 [node name="rock_right" parent="." unique_id=1999242164 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 
-[node name="player" parent="." unique_id=1253224889 instance=ExtResource("1")]
+[node name="player" parent="." unique_id=1253224889 node_paths=PackedStringArray("musket") instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+musket = NodePath("../musket")
+
+[node name="musket_back_slot" parent="player/visuals/flip" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.35, -0.1)
+
+[node name="musket_aim_slot" parent="player/visuals/flip" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.7, 0.1)
 
 [node name="camera" type="Camera3D" parent="player" unique_id=1545861327]
 transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 10, 12)
@@ -60,16 +68,16 @@ fov = 55.0
 [node name="lantern" parent="." unique_id=1329808312 node_paths=PackedStringArray("carrier", "attachment_slot", "drop_slot", "carried_ui") instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
 carrier = NodePath("../player")
-attachment_slot = NodePath("../player/visuals/lantern_slot")
+attachment_slot = NodePath("../player/visuals/flip/lantern_slot")
 drop_slot = NodePath("../player/drop_slot")
 carried_ui = NodePath("../hud/lantern")
 
-[node name="musket" parent="." node_paths=PackedStringArray("carrier", "lantern", "back_slot", "aim_slot") instance=ExtResource("5")]
-position = Vector3(-2, 0, 1)
+[node name="musket" parent="." unique_id=1198564765 node_paths=PackedStringArray("carrier", "lantern", "back_slot", "aim_slot") instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
 carrier = NodePath("../player")
 lantern = NodePath("../lantern")
-back_slot = NodePath("../player/visuals/musket_back_slot")
-aim_slot = NodePath("../player/visuals/musket_aim_slot")
+back_slot = NodePath("../player/visuals/flip/musket_back_slot")
+aim_slot = NodePath("../player/visuals/flip/musket_aim_slot")
 
 [node name="hud" type="CanvasLayer" parent="." unique_id=997754346]
 
@@ -109,3 +117,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Click LMB to wind"
 vertical_alignment = 1
+
+[editable path="player"]

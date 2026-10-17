@@ -11,9 +11,10 @@ gradient = SubResource("color")
 width = 24
 height = 36
 
-[node name="lantern" type="Node3D" unique_id=709075666 node_paths=PackedStringArray("light")]
+[node name="lantern" type="Node3D" unique_id=709075666 node_paths=PackedStringArray("light", "visuals")]
 script = ExtResource("1")
 light = NodePath("visuals/light")
+visuals = NodePath("visuals")
 min_radius = 0.6
 
 [node name="visuals" type="Node3D" parent="." unique_id=241417503]

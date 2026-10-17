@@ -6,6 +6,7 @@ extends Node3D
 @export var drop_slot: Marker3D
 @export var carried_ui: Control
 @export var light: OmniLight3D
+@export var visuals: CameraFacing
 @export var pickup_radius: float = 1.5
 @export var max_energy: float = 100.0
 @export var energy_drain: float = 5.0
@@ -50,12 +51,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
   if is_carried:
     reparent(_ground_parent)
-    global_position = drop_slot.global_position
+    global_transform = Transform3D(Basis.IDENTITY, drop_slot.global_position)
+    visuals.set_process(true)
     is_carried = false
     carried_ui.hide()
   elif global_position.distance_squared_to(carrier.global_position) <= pickup_radius * pickup_radius:
     reparent(attachment_slot, false)
-    position = Vector3.ZERO
+    transform = Transform3D.IDENTITY
+    visuals.set_process(false)
+    visuals.transform = Transform3D.IDENTITY
     is_carried = true
     carried_ui.show()
   else:

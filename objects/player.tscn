@@ -20,9 +20,10 @@ shader = ExtResource("3")
 shader_parameter/sprite_texture = SubResource("texture")
 shader_parameter/omnidirectional = true
 
-[node name="player" type="CharacterBody3D" unique_id=1376385991]
+[node name="player" type="CharacterBody3D" unique_id=1376385991 node_paths=PackedStringArray("flip")]
 motion_mode = 1
 script = ExtResource("1")
+flip = NodePath("visuals/flip")
 dash_speed = 14.0
 dash_duration = 0.18
 dash_recovery = 0.5
@@ -35,7 +36,9 @@ shape = SubResource("shape")
 [node name="visuals" type="Node3D" parent="."]
 script = ExtResource("2")
 
-[node name="sprite" type="Sprite3D" parent="visuals" unique_id=1425917564]
+[node name="flip" type="Node3D" parent="visuals"]
+
+[node name="sprite" type="Sprite3D" parent="visuals/flip" unique_id=1425917564]
 cast_shadow = 0
 material_override = SubResource("material")
 offset = Vector2(0, 48)
@@ -43,14 +46,14 @@ pixel_size = 0.015
 alpha_cut = 1
 texture = SubResource("texture")
 
-[node name="lantern_slot" type="Marker3D" parent="visuals" unique_id=440290762]
+[node name="lantern_slot" type="Marker3D" parent="visuals/flip" unique_id=440290762]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.81327057, 0.88996845, 0.15)
 
 [node name="drop_slot" type="Marker3D" parent="." unique_id=207987825]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.813, 0, 0.15)
 
-[node name="musket_back_slot" type="Marker3D" parent="visuals"]
+[node name="musket_back_slot" type="Marker3D" parent="visuals/flip"]
 position = Vector3(-0.35, 0.35, -0.1)
 
-[node name="musket_aim_slot" type="Marker3D" parent="visuals"]
+[node name="musket_aim_slot" type="Marker3D" parent="visuals/flip"]
 position = Vector3(0.25, 0.7, 0.1)
