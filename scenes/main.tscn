@@ -59,7 +59,7 @@ fov = 55.0
 [node name="lantern" parent="." unique_id=1329808312 node_paths=PackedStringArray("carrier", "attachment_slot", "drop_slot", "carried_ui") instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
 carrier = NodePath("../player")
-attachment_slot = NodePath("../player/lantern_slot")
+attachment_slot = NodePath("../player/visuals/lantern_slot")
 drop_slot = NodePath("../player/drop_slot")
 carried_ui = NodePath("../hud/lantern")
 

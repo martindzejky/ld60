@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody3D
 
 @export var speed: float = 4.0
@@ -28,7 +29,10 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
   if not event.is_action_pressed('dash') or event.is_echo():
     return
-  if not _cooldown_timer.is_stopped() or not _dash_timer.is_stopped() or not _recovery_timer.is_stopped():
+  if (
+    not _cooldown_timer.is_stopped() or not _dash_timer.is_stopped()
+    or not _recovery_timer.is_stopped()
+  ):
     return
 
   var direction := Input.get_vector('move_left', 'move_right', 'move_up', 'move_down')

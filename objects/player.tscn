@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://w6mjmcbcb6d"]
 
 [ext_resource type="Script" uid="uid://cwsar4g8vkhkt" path="res://scripts/player.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/camera_facing.gd" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="shape"]
 radius = 0.3
@@ -20,7 +21,6 @@ vertex_color_use_as_albedo = true
 albedo_texture = SubResource("texture")
 diffuse_mode = 1
 specular_mode = 2
-billboard_mode = 1
 disable_receive_shadows = true
 backlight_enabled = true
 backlight = Color(1, 1, 1, 1)
@@ -37,16 +37,18 @@ dash_cooldown = 4.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("shape")
 
-[node name="sprite" type="Sprite3D" parent="." unique_id=1425917564]
+[node name="visuals" type="Node3D" parent="."]
+script = ExtResource("2")
+
+[node name="sprite" type="Sprite3D" parent="visuals" unique_id=1425917564]
 cast_shadow = 0
 material_override = SubResource("material")
 offset = Vector2(0, 48)
 pixel_size = 0.015
-billboard = 1
 alpha_cut = 1
 texture = SubResource("texture")
 
-[node name="lantern_slot" type="Marker3D" parent="." unique_id=440290762]
+[node name="lantern_slot" type="Marker3D" parent="visuals" unique_id=440290762]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.81327057, 0.88996845, 0.15)
 
 [node name="drop_slot" type="Marker3D" parent="." unique_id=207987825]

@@ -1,3 +1,4 @@
+class_name Lantern
 extends Node3D
 
 @export var carrier: CharacterBody3D
