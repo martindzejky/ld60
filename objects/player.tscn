@@ -20,7 +20,15 @@ shader = ExtResource("3")
 shader_parameter/sprite_texture = SubResource("texture")
 shader_parameter/omnidirectional = true
 
-[node name="player" type="CharacterBody3D" unique_id=1376385991 node_paths=PackedStringArray("flip", "lantern_slot", "drop_slot", "musket_back_slot", "musket_front_slot", "musket_aim_slot")]
+[sub_resource type="Gradient" id="aim_color"]
+colors = PackedColorArray(1, 0.9, 0.6, 0.6, 1, 0.9, 0.6, 0.6)
+
+[sub_resource type="GradientTexture2D" id="aim_texture"]
+gradient = SubResource("aim_color")
+width = 1
+height = 1
+
+[node name="player" type="CharacterBody3D" unique_id=1376385991 node_paths=PackedStringArray("flip", "lantern_slot", "drop_slot", "musket_back_slot", "musket_front_slot", "musket_aim_slot", "aim_line")]
 motion_mode = 1
 script = ExtResource("1")
 flip = NodePath("visuals/flip")
@@ -29,6 +37,7 @@ drop_slot = NodePath("drop_slot")
 musket_back_slot = NodePath("visuals/flip/musket_back_slot")
 musket_front_slot = NodePath("visuals/flip/musket_front_slot")
 musket_aim_slot = NodePath("visuals/flip/musket_aim_slot")
+aim_line = NodePath("aim_line")
 dash_speed = 14.0
 dash_duration = 0.18
 dash_recovery = 0.5
@@ -37,6 +46,12 @@ dash_cooldown = 4.0
 [node name="shape" type="CollisionShape3D" parent="." unique_id=2138894733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("shape")
+
+[node name="aim_line" type="Sprite3D" parent="."]
+visible = false
+cast_shadow = 0
+pixel_size = 1.0
+texture = SubResource("aim_texture")
 
 [node name="visuals" type="Node3D" parent="."]
 script = ExtResource("2")

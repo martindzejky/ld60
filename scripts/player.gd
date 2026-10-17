@@ -11,6 +11,8 @@ signal died
 @export var musket_back_slot: Marker3D
 @export var musket_front_slot: Marker3D
 @export var musket_aim_slot: Marker3D
+@export var aim_line: Sprite3D
+@export var aim_height: float = 0.7
 @export var pickup_radius: float = 1.5
 @export var speed: float = 4.0
 @export var dash_speed: float = 14.0
@@ -113,6 +115,7 @@ func take_bite() -> void:
   _fuse_shot_requested = false
   _update_equipment()
   flip.scale *= 0.5
+  aim_line.hide()
   set_process(false)
   set_physics_process(false)
   set_process_input(false)
@@ -190,6 +193,30 @@ func _aiming_requested() -> bool:
   )
 
 
+func _get_aim_target(mouse: Vector2) -> Vector3:
+  var camera := get_viewport().get_camera_3d()
+  var origin := camera.project_ray_origin(mouse)
+  var direction := camera.project_ray_normal(mouse)
+  var target := global_position
+  var point: Variant = Plane(Vector3.UP, global_position.y + aim_height).intersects_ray(origin, direction)
+  if point != null:
+    target = point
+    target.y = global_position.y
+  return global_position + (target - global_position).limit_length(musket.shot_range)
+
+
+func _update_aim_line(target: Vector3) -> void:
+  var direction := global_position.direction_to(target)
+  var length := global_position.distance_to(target)
+  if is_zero_approx(length):
+    aim_line.hide()
+    return
+  aim_line.global_position = (global_position + target) * 0.5 + Vector3.UP * 0.025
+  aim_line.global_basis = Basis(direction, Vector3.UP.cross(direction), Vector3.UP).scaled_local(
+    Vector3(length, 0.025, 1.0)
+  )
+
+
 func _physics_process(_delta: float) -> void:
   var direction := Input.get_vector('move_left', 'move_right', 'move_up', 'move_down')
   if not direction.is_zero_approx():
@@ -203,17 +230,16 @@ func _physics_process(_delta: float) -> void:
     velocity = Vector3(direction.x, 0.0, direction.y) * speed
 
   move_and_slide()
+  _update_equipment()
+  aim_line.visible = musket.is_aiming
+  var target := global_position
+  if musket.is_aiming:
+    target = _get_aim_target(get_viewport().get_mouse_position())
+    _update_aim_line(target)
   if _shot_requested or _fuse_shot_requested:
     _shot_requested = false
-    _update_equipment()
     if musket.is_aiming:
-      var camera := get_viewport().get_camera_3d()
-      var mouse := get_viewport().get_mouse_position()
-      var target: Variant = Plane(Vector3.UP).intersects_ray(
-        camera.project_ray_origin(mouse), camera.project_ray_normal(mouse)
-      )
-      if target != null:
-        musket.fire(global_position, target, get_rid())
+      musket.fire(global_position, target, get_rid())
     if _fuse_shot_requested and musket.is_lit:
       musket.fire_upwards()
     _fuse_shot_requested = false

@@ -3,9 +3,8 @@
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/camera_facing.gd" id="2"]
 
-[sub_resource type="CapsuleShape3D" id="hitbox"]
-radius = 0.5
-height = 1.0
+[sub_resource type="BoxShape3D" id="hitbox"]
+size = Vector3(1.4, 1.6, 1.8)
 
 [sub_resource type="Gradient" id="body_color"]
 colors = PackedColorArray(0.015, 0.035, 0.025, 1, 0.015, 0.035, 0.025, 1)
@@ -36,7 +35,7 @@ script = ExtResource("1")
 head = NodePath("visuals/head")
 
 [node name="hitbox" type="CollisionShape3D" parent="."]
-position = Vector3(0, 0.5, 0)
+position = Vector3(0, 0.7, -0.2)
 shape = SubResource("hitbox")
 
 [node name="visuals" type="Node3D" parent="."]
