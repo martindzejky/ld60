@@ -24,6 +24,19 @@ var ramrod_insertion: float = 0.0
 var is_lit: bool = false
 
 
+func warm_up_effects() -> void:
+  var flash := flash_scene.instantiate() as MuzzleFlash
+  add_child(flash)
+  var smoke := smoke_scene.instantiate() as CPUParticles3D
+  add_child(smoke)
+  for frame: int in range(2):
+    await RenderingServer.frame_post_draw
+    if not is_instance_valid(self):
+      return
+  flash.queue_free()
+  smoke.queue_free()
+
+
 func ignite() -> void:
   if not is_owned or reload_state != ReloadState.LOADED or is_lit:
     return

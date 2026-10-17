@@ -16,6 +16,9 @@ func play(start: Vector3, end: Vector3) -> void:
   beam.global_basis = Basis(direction, side, direction.cross(side)).scaled_local(
     Vector3(start.distance_to(end), width, 1.0)
   )
+  await RenderingServer.frame_post_draw
+  if not is_instance_valid(self):
+    return
   var tween := create_tween().set_parallel(true)
   tween.tween_property(light, 'light_energy', 0.0, duration)
   tween.tween_property(beam, 'modulate:a', 0.0, duration)
