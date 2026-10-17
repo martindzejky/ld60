@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/musket_ui.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/effects_warmup.gd" id="8"]
 [ext_resource type="PackedScene" path="res://objects/enemy.tscn" id="9"]
+[ext_resource type="Script" path="res://scripts/player_light_debug.gd" id="10"]
 
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
@@ -69,6 +70,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.7, 0.1)
 [node name="camera" type="Camera3D" parent="player" unique_id=1545861327]
 transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 10, 12)
 current = true
+cull_mask = 1
 fov = 55.0
 
 [node name="lantern" parent="." unique_id=1329808312 instance=ExtResource("3")]
@@ -90,6 +92,20 @@ theme_override_font_sizes/font_size = 20
 text = "WASD / Arrow keys - Move
 E / Enter - Pick up or drop
 RMB - Aim musket / LMB - Fire"
+
+[node name="player_light_debug" type="Label" parent="hud" node_paths=PackedStringArray("player")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -50.0
+offset_right = 320.0
+offset_bottom = -24.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
+script = ExtResource("10")
+player = NodePath("../../player")
 
 [node name="lantern" type="Button" parent="hud" unique_id=1705136529 node_paths=PackedStringArray("lantern", "lever")]
 visible = false

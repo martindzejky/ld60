@@ -2,6 +2,7 @@ class_name Player
 extends CharacterBody3D
 
 signal died
+signal light_changed(lit: bool)
 
 @export var flip: Node3D
 @export var musket: Musket
@@ -12,6 +13,7 @@ signal died
 @export var musket_front_slot: Marker3D
 @export var musket_aim_slot: Marker3D
 @export var aim_line: Sprite3D
+@export var light_sensor: LightSensor
 @export var aim_height: float = 0.7
 @export var pickup_radius: float = 1.5
 @export var speed: float = 4.0
@@ -22,6 +24,9 @@ signal died
 @export var ramrod_drag_distance: float = 150.0
 
 var is_dead: bool = false
+var is_lit: bool:
+  get:
+    return light_sensor.is_lit
 var _last_direction: Vector2 = Vector2.DOWN
 var _dash_direction: Vector2 = Vector2.DOWN
 var _dash_timer: Timer = Timer.new()
@@ -85,6 +90,10 @@ func _unhandled_input(event: InputEvent) -> void:
   else:
     return
   get_viewport().set_input_as_handled()
+
+
+func _on_light_sensor_light_changed(lit: bool) -> void:
+  light_changed.emit(lit)
 
 
 func _on_lantern_pressed() -> void:
