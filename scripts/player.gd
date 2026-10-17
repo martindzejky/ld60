@@ -53,8 +53,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
   if event.is_action_pressed('interact'):
     _interact()
-  elif event.is_action_pressed('wind_lantern') and lantern.is_carried:
-    lantern.charge()
   elif event.is_action_pressed('fire_musket'):
     _shot_requested = _aiming_requested()
   elif event.is_action_pressed('dash'):
@@ -62,6 +60,11 @@ func _unhandled_input(event: InputEvent) -> void:
   else:
     return
   get_viewport().set_input_as_handled()
+
+
+func _on_lantern_pressed() -> void:
+  if lantern.is_carried:
+    lantern.charge()
 
 
 func _dash() -> void:
