@@ -30,12 +30,6 @@ light_color = Color(1, 0.88, 0.7, 1)
 light_energy = 0.8
 shadow_enabled = true
 
-[node name="camera" type="Camera3D" parent="."]
-position = Vector3(0, 10, 12)
-rotation_degrees = Vector3(-40, 0, 0)
-fov = 55.0
-current = true
-
 [node name="ground" type="Sprite3D" parent="."]
 rotation_degrees = Vector3(-90, 0, 0)
 alpha_cut = 1
@@ -53,6 +47,12 @@ position = Vector3(4, 0, 3)
 
 [node name="player" parent="." instance=ExtResource("1")]
 position = Vector3(0, 0, 3)
+
+[node name="camera" type="Camera3D" parent="player"]
+position = Vector3(0, 10, 12)
+rotation_degrees = Vector3(-40, 0, 0)
+fov = 55.0
+current = true
 
 [node name="hud" type="CanvasLayer" parent="."]
 
