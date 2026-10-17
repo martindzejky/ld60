@@ -1,5 +1,5 @@
 class_name Enemy
-extends Area3D
+extends CharacterBody3D
 
 @export var target: Player
 @export var head: Sprite3D
@@ -17,13 +17,15 @@ func _ready() -> void:
   _closed_head_y = head.position.y
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+  velocity = Vector3.ZERO
   if target.is_dead or _biting:
     return
   if _within_bite_range():
     _start_bite()
   else:
-    global_position = global_position.move_toward(target.global_position, speed * delta)
+    velocity = global_position.direction_to(target.global_position) * speed
+    move_and_slide()
 
 
 func take_shot() -> void:

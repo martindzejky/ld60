@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://de8uuvch50dlp" path="res://scripts/effects_warmup.gd" id="8"]
 [ext_resource type="PackedScene" path="res://objects/enemy.tscn" id="9"]
 [ext_resource type="Script" uid="uid://lvfpqnu12jvv" path="res://scripts/player_light_debug.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/ground.gd" id="11"]
 
 [sub_resource type="Environment" id="environment"]
 background_mode = 1
@@ -38,6 +39,7 @@ shader_parameter/ground_texture = SubResource("ground_texture")
 environment = SubResource("environment")
 
 [node name="ground" type="CSGPolygon3D" parent="." unique_id=205520019]
+script = ExtResource("11")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 cast_shadow = 0
 polygon = PackedVector2Array(-7, -6, -10.051549, -14.92685, -17.142384, -16.616467, -17.262762, -22.555105, -11.564877, -28.373367, -2.0951552, -27.37022, 1.8371892, -23.19712, -1.5333915, -17.418985, -1.905983, -12.96068, -2, -7, 1, -5, 6, -6, 8, -2, 6, 1, 7, 5, 3, 7, 0, 5, -5, 6, -8, 2, -6, 0)

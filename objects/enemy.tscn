@@ -27,10 +27,10 @@ gradient = SubResource("eye_color")
 width = 16
 height = 8
 
-[node name="enemy" type="Area3D" node_paths=PackedStringArray("head")]
+[node name="enemy" type="CharacterBody3D" node_paths=PackedStringArray("head")]
+motion_mode = 1
 collision_layer = 2
-collision_mask = 0
-monitoring = false
+collision_mask = 4
 script = ExtResource("1")
 head = NodePath("visuals/head")
 
