@@ -10,5 +10,5 @@ void fragment() {
 void light() {
   // Godot supplies attenuation for each light, including its shadows.
   float lit = step(0.001, ATTENUATION);
-  DIFFUSE_LIGHT += max(dot(NORMAL, LIGHT), 0.0) * lit * LIGHT_COLOR / PI;
+  DIFFUSE_LIGHT += lit * LIGHT_COLOR / PI;
 }
